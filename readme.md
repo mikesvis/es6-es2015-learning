@@ -82,3 +82,90 @@ This will be ok! WTF?! This is an issue about **const**: it is immutable to reas
 2\. Default to using **let**.
 
 3\. Use const for variables which won't change (e.g. months names)
+
+
+
+## 3. Arrows
+
+Here is an example
+
+	class TaskCollection {
+		
+		constructor(tasks = []){
+			this.tasks = tasks;
+		}
+
+		log(){
+			this.tasks.forEach(function(task){
+				console.log(task);
+			});
+		}
+
+	}
+
+	class Task {}
+
+	new TaskCollection([
+		new Task, new Task, new Task
+	]).log();
+
+What happens when we apply **arrows**? .log() may now look like this:
+
+	log(){
+		this.tasks.forEach((task) => {
+			console.log(task);
+		});
+	}
+
+In this case we have only one argument (task) so we can go further and simplify:
+
+	log(){
+		this.tasks.forEach(task => {
+			console.log(task);
+		});
+	}	
+
+We are doing only one action in the block. So we can ommit { } like this:
+
+	log(){
+		this.tasks.forEach(task => console.log(task));
+	}
+
+Wow! There is only 1 line now!
+
+Things to remember:
+
+**1. Arguments**
+
+* No arguments: **() => console.log()**
+* Only 1 argument: **task => console.log()**
+* 2 and more arguments: **(task, arg1, arg2) => console.log()**
+
+**2. Body**
+
+* Only 1 operator: **task => console.log();**. And **return** keyword is implicit. It will automatically happen.
+* 2 and more opeartors: **task => {console.log(); console.log();}**
+
+Remeber that **this** in this case works differently:
+
+	log(){
+		this.tasks.forEach(task => {
+			console.log(this);
+		});
+	}
+
+will output *> TaskCollection {tasks: Array[3]}* to browser console. So **this** is a TaskCollection object (**not a function** as we would expect!!!). In other words:
+
+1\. **this** in *function(task){ console.log(this) }* will be changed
+
+2\. **this** in *task => { console.log(this) }* will not be changed 
+
+Example just to memorize:
+
+	let names = ['Taylor', 'Jeffrey', 'Adam', 'Matt'];
+	names = names.map(name => `${name} is cool`);
+	console.log(names);
+
+Will output
+
+*['Taylor is cool', 'Jeffrey is cool', 'Adam is cool', 'Matt is cool']*
