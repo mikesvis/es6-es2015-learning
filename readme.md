@@ -240,3 +240,74 @@ function applyDiscount(cost, discount = defaultDiscountRate()){
 
 alert(applyDiscount(100));
 ```
+
+
+
+## 5. Rest and spread
+
+This is about arguments and it is very simple. We take all the rest arguments passed and turn them into array. 
+
+### 5.1 Rest agruments (... operator in function declaration)
+
+```js
+function sum(...numbers){
+	// the old way function
+	return numbers.reduce(function(prev, current)){
+		return prev + current;
+	}
+}
+
+// now we may pass any number of parameters
+sum(1, 2, 3);
+```
+
+or with ES6 arrows
+
+```js
+function sum(...numbers){
+	// new arrows way
+	return numbers.reduce((prev, current) => prev + current)
+}
+
+// now we may pass any number of parameters
+sum(1, 2, 3);
+```
+
+Just to mention about other arguments - those should be in the beggining
+
+```js
+function sum(foo, ...numbers){
+
+}
+
+sum('bar', 1, 2, 3);
+```
+
+### 5.2 Spread argumnets (... operator in function call)
+
+This one is diametrically opposite to rest. E.g.
+
+```js
+// imagine the function which only accepts separated agruments
+function sum(x, y){
+	return x + y;
+}
+
+// but we have got an array
+let numbers = [1, 2];
+
+// now we can spread array to separate values for passing arguments separatelly (not within an array)
+sum(...numbers);
+```
+
+Just like with **rest** - other parameters should go first
+
+```js
+function sum(foo, x, y){
+
+}
+
+let numbers = [1, 2];
+
+sum('bar', ...numbers);
+```
