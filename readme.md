@@ -101,7 +101,7 @@ const months = Object.freeze([...]);
 
 
 
-## 3. Arrows
+## 4. Arrows
 
 Here is an example
 
@@ -215,7 +215,7 @@ Will output
 
 
 
-## 4. Default parameters
+## 5. Default parameters
 
 ES6 has now support of default parameters. By example:
 
@@ -243,11 +243,11 @@ alert(applyDiscount(100));
 
 
 
-## 5. Rest and spread
+## 6. Rest and spread
 
 This is about arguments and it is very simple. We take all the rest arguments passed and turn them into array. 
 
-### 5.1 Rest agruments (... operator in function declaration)
+### 6.1 Rest agruments (... operator in function declaration)
 
 ```js
 function sum(...numbers){
@@ -283,7 +283,7 @@ function sum(foo, ...numbers){
 sum('bar', 1, 2, 3);
 ```
 
-### 5.2 Spread argumnets (... operator in function call)
+### 6.2 Spread argumnets (... operator in function call)
 
 This one is diametrically opposite to rest. E.g.
 
@@ -314,7 +314,7 @@ sum('bar', ...numbers);
 
 
 
-## 6. Template strings
+## 7. Template strings
 
 With only use of \`STRING_CONTENTS_HERE\` (backticks) we can easily deal with strings:
 
@@ -354,9 +354,9 @@ let template = `
 
 
 
-## 7. Awesome object enhancements 
+## 8. Awesome object enhancements 
 
-### 7.1 Object shorthand
+### 8.1 Object shorthand
 
 Lets imagine the following
 
@@ -410,7 +410,7 @@ new Vue({
 }); 
 ``` 
 
-### 7.2 Method shorthand
+### 8.2 Method shorthand
 
 The following example with old style method declaration:
 
@@ -454,7 +454,7 @@ function getPerson(){
 console.log(getPerson().greet()); // Hello, John!
 ```
 
-### 7.3 Object destructuring
+### 8.3 Object destructuring
 
 ```js
 let person = {
@@ -500,7 +500,7 @@ console.log(results, count);
 // > ['foo', 'bar'] 30
 ```
 
-### 7.4 Object destructuring as a function agrument
+### 8.4 Object destructuring as a function agrument
 
 We can also use object destructuring as a function argument:
 
