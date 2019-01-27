@@ -351,3 +351,231 @@ let template = `
 </div>
 `.trim();
 ```
+
+
+
+## 6. Awesome object enhancements 
+
+### 6.1 Object shorthand
+
+Lets imagine the following
+
+```js
+function getPerson(){
+
+	let name = 'John';
+	let age = 25;
+
+	// if we want to return as an object, we must hardcode it like this:
+	return {
+		name: name,
+		age: age
+	}
+
+}
+```
+
+This **return** hardcoding is kind of annoyng - a bit of repetition there. With ES6 we can do following: In the situation when your property name is the same as the variable then we can remove "**: name**" or/and "**: age**" entirely like below:
+
+```js
+function getPerson(){
+
+	let name = 'John';
+	let age = 25;
+	
+	// remove ": name" and ": age" because this property name is the same as variable name.
+	// Now we can make it even nicer with one line 
+	return { name, age };
+
+}
+
+// call of the property is the same as before
+console.log(getPerson().name);
+```
+
+This one is in a lot of use. E.g. with Vue:
+
+```js
+
+import HomeView from './components/home-view.vue';
+import Alert from './components/alert.vue';
+import Notification from './components/notification.vue';
+
+new Vue({
+	components: { HomeView, Alert, Notification }
+
+	// earlier we had to code like:
+	// components: { HomeView: HomeView, Alert: Alert, Notification: Noification }
+	// just a useless repetition of code 
+}); 
+``` 
+
+### 6.2 Method shorthand
+
+The following example with old style method declaration:
+
+```js
+function getPerson(){
+
+	let name = 'John';
+	let age = 25;
+
+	return {
+		name: name,
+		age: age,
+		greet: function(){ // ES5 way to write method
+			return 'Hello, ' + this.name + '!';
+		}
+	}
+
+}
+
+console.log(getPerson().greet()); // Hello, John!
+``` 
+
+With ES6 we can shorthand method like this: get rid of "**: function**" part + we can apply template strings:
+
+```js
+function getPerson(){
+
+	let name = 'John';
+	let age = 25;
+
+	return {
+		name: name,
+		age: age,
+		greet(){ // ES6 way
+			return `Hello, ${this.name} !`;
+		}
+	}
+
+}
+
+console.log(getPerson().greet()); // Hello, John!
+```
+
+### 6.3 Object destructuring
+
+```js
+let person = {
+	name: 'Karen',
+	age: 32
+}
+
+// object destructuring is like this:
+
+let {name, age} = person;
+
+alert(name); // 'Karen'
+alert(age); // 32
+```
+
+Its like assigning object properties to a coresponding variables. Like destructure object into variables. It is simillar to php's **extract()**:
+
+```php
+extract(['name'=>'John']); // now you have variable $name
+var_dump($name); // 'John'
+```
+
+This is very usefull feature. Imagine that there is an ajax request with returned data:
+
+```js
+let data = {
+	name: 'Karen',
+	age: 32,
+	results: ['foo', 'bar'],
+	count: 30
+}
+
+// The ES5 old way to fetch the results:
+// let results = data.results; 
+// let count = data.count;
+
+// With ES6 we can simply:
+let {results, count} = data;
+// and results and count will be extracted or  in other words
+// data will be destructured to results and count variables
+
+console.log(results, count);
+// > ['foo', 'bar'] 30
+```
+
+### 6.3 Object destructuring as a function agrument
+
+We can also use object destructuring as a function argument:
+
+```js
+// The ES5 old way to fetch the results:
+
+// simulate ajax request
+function getData(data){
+	var results = data.results; 
+	var count = data.count;	
+
+	console.log(results, count);
+}
+
+getData({
+	name: 'Karen',
+	age: 32,
+	results: ['foo', 'bar'],
+	count: 30
+});
+
+// > ['foo', 'bar'] 30
+```
+
+The new ES6 way:
+
+```js
+// The new ES6 way:
+
+// simulate ajax request
+function getData({results, count}){
+	console.log(results, count);
+}
+
+getData({
+	name: 'Karen',
+	age: 32,
+	results: ['foo', 'bar'],
+	count: 30
+});
+
+// > ['foo', 'bar'] 30
+```
+
+How cool is that? One more example to memorize:
+
+```js
+// ES5
+function greet(person){
+	var name = person.name;
+	var age = person.age;
+	
+	console.log("Hello, " + name + "! You are " + age +".");
+}
+
+greet({
+	name: 'Luke',
+	age: 24
+})
+
+// > 'Hello, Luke! You are 24. 
+```
+
+Now ES6 way:
+
+```js
+// ES6
+function greet({name, age}){
+	console.log(`Hello, ${name}! You are ${age}.`);
+}
+
+greet({
+	name: 'Luke',
+	age: 24
+})
+
+// > 'Hello, Luke! You are 24. 
+```
