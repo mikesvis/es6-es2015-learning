@@ -75,7 +75,7 @@ if(bool){
 const names = ['John', 'Sandy'];
 names = ['Frank', 'Susan'];
 console.log(names);
-```	
+```
 
 This will return error **Assignment to a constant variable** as expected, BUT if:
 
@@ -310,4 +310,44 @@ function sum(foo, x, y){
 let numbers = [1, 2];
 
 sum('bar', ...numbers);
+```
+
+
+
+## 6. Template strings
+
+With only use of \`STRING_CONTENTS_HERE\` (backticks) we can easily deal with strings:
+
+```js
+let template = `
+<div class="foo">
+	<p class="bar">Hello here!</p>
+</div>
+`
+
+console.log(template);
+```
+
+In case we want to reference a value:
+
+```js
+let name = "Michael";
+
+let template = `
+<div class="foo">
+	<p class="bar">Hello, ${name}!</p>
+</div>
+`
+
+console.log(template);
+```
+
+In case we want to get rid of the white-space in front of template string we can use **trim()**;
+
+```js
+let template = `
+<div class="foo">
+	<p class="bar">Hello, ${name}!</p>
+</div>
+`.trim();
 ```
