@@ -4,33 +4,39 @@
 
 We already know how to decalare variables
 
-	var name="Joe";
+```js
+var name="Joe";
+```
 
 So why do we need **let** and **const**?
-	
-	function fire(bool){
-		if(bool){
-			var foo = "bar";
-			console.log(foo);
-		} else {
-			console.log(foo);
-		}
-	}
 
-	fire(false);
+```js
+function fire(bool){
+	if(bool){
+		var foo = "bar";
+		console.log(foo);
+	} else {
+		console.log(foo);
+	}
+}
+
+fire(false);
+```
 
 In this case the output will be **undefined** and this is very confusing because we should get **Reference error: foo is undefined** instead (logically!). This is called **hoisting**: this means in example that behind the scenes var foo gets **hoisted** to the top of the scope like this:
 
-	function fire(bool){
-		var foo; 
+```js
+function fire(bool){
+	var foo; 
 
-		if(bool){
-			foo = "bar";
-			console.log(foo);
-		} else {
-			console.log(foo);
-		}
+	if(bool){
+		foo = "bar";
+		console.log(foo);
+	} else {
+		console.log(foo);
 	}
+}
+```
 
 So now with this example it gets more clear why we get **undefined**. This makes sence that it is a good practice to declare all the variables at the top. Just because of this confusing situation for developers there are two new keywords **let** and **const**.
 
@@ -40,40 +46,50 @@ So now with this example it gets more clear why we get **undefined**. This makes
 
 Lets use **let** in our example:
 
-	function fire(bool){
-		if(bool){
-			let foo = "bar";
-			console.log(foo);
-		} else {
-			console.log(foo);
-		}
+```js
+function fire(bool){
+	if(bool){
+		let foo = "bar";
+		console.log(foo);
+	} else {
+		console.log(foo);
 	}
+}
+```
 
-	fire(false);
+fire(false);
 
 Now we get what is logically correct - an error: **Reference error: foo is undefined**. foo is only visible inside of 
 
-	if(bool){
-		...
-	}
+```js
+if(bool){
+	...
+}
+```
 
 ### 3.2 Const
 
 **const** is not just a constant which cannot be changed. It's a bit more difficult and confusing than it appears to be:
-	
-	const names = ['John', 'Sandy'];
-	names = ['Frank', 'Susan'];
-	console.log(names);
+
+```js
+const names = ['John', 'Sandy'];
+names = ['Frank', 'Susan'];
+console.log(names);
+```	
 
 This will return error **Assignment to a constant variable** as expected, BUT if:
 
-	const names = ['John', 'Sandy'];
-	names.push('Susan');
-	console.log(names);
+```js
+const names = ['John', 'Sandy'];
+names.push('Susan');
+console.log(names);
+```
 
 This will be ok! WTF?! This is an issue about **const**: it is immutable to reassignment. To force immutability for an example above do this:
 
-	const months = Object.freeze([...]);
+```js
+const months = Object.freeze([...]);
+```
 
 ### 3.3 Final rules
 
@@ -89,47 +105,55 @@ This will be ok! WTF?! This is an issue about **const**: it is immutable to reas
 
 Here is an example
 
-	class TaskCollection {
-		
-		constructor(tasks = []){
-			this.tasks = tasks;
-		}
-
-		log(){
-			this.tasks.forEach(function(task){
-				console.log(task);
-			});
-		}
-
+```js	
+class TaskCollection {
+	
+	constructor(tasks = []){
+		this.tasks = tasks;
 	}
 
-	class Task {}
+	log(){
+		this.tasks.forEach(function(task){
+			console.log(task);
+		});
+	}
 
-	new TaskCollection([
-		new Task, new Task, new Task
-	]).log();
+}
+
+class Task {}
+
+new TaskCollection([
+	new Task, new Task, new Task
+]).log();
+```
 
 What happens when we apply **arrows**? .log() may now look like this:
 
-	log(){
-		this.tasks.forEach((task) => {
-			console.log(task);
-		});
-	}
+```js
+log(){
+	this.tasks.forEach((task) => {
+		console.log(task);
+	});
+}
+```
 
 In this case we have only one argument (task) so we can go further and simplify:
 
-	log(){
-		this.tasks.forEach(task => {
-			console.log(task);
-		});
-	}	
+```js
+log(){
+	this.tasks.forEach(task => {
+		console.log(task);
+	});
+}	
+```
 
 We are doing only one action in the block. So we can ommit { } like this:
 
-	log(){
-		this.tasks.forEach(task => console.log(task));
-	}
+```js
+log(){
+	this.tasks.forEach(task => console.log(task));
+}
+```
 
 Wow! There is only 1 line now!
 
@@ -137,22 +161,37 @@ Things to remember:
 
 **1. Arguments**
 
-* No arguments: **() => console.log()**
-* Only 1 argument: **task => console.log()**
-* 2 and more arguments: **(task, arg1, arg2) => console.log()**
+```js
+// No arguments:
+() => console.log()
+
+// Only 1 argument:
+task => console.log()
+
+// 2 and more arguments:
+(task, arg1, arg2) => console.log()
+```
 
 **2. Body**
 
-* Only 1 operator: **task => console.log();**. And **return** keyword is implicit. It will automatically happen.
-* 2 and more opeartors: **task => {console.log(); console.log();}**
+```js
+// Only 1 operator:
+task => console.log();
+// And "return" keyword is implicit. It will automatically happen.
+
+// 2 and more opeartors:
+task => {console.log(); console.log();}
+```
 
 Remeber that **this** in this case works differently:
 
-	log(){
-		this.tasks.forEach(task => {
-			console.log(this);
-		});
-	}
+```js
+log(){
+	this.tasks.forEach(task => {
+		console.log(this);
+	});
+}
+```
 
 will output *> TaskCollection {tasks: Array[3]}* to browser console. So **this** is a TaskCollection object (**not a function** as we would expect!!!). In other words:
 
@@ -162,10 +201,14 @@ will output *> TaskCollection {tasks: Array[3]}* to browser console. So **this**
 
 Example just to memorize:
 
-	let names = ['Taylor', 'Jeffrey', 'Adam', 'Matt'];
-	names = names.map(name => `${name} is cool`);
-	console.log(names);
+```js
+let names = ['Taylor', 'Jeffrey', 'Adam', 'Matt'];
+names = names.map(name => `${name} is cool`);
+console.log(names);
+```
 
 Will output
 
-*['Taylor is cool', 'Jeffrey is cool', 'Adam is cool', 'Matt is cool']*
+```js
+['Taylor is cool', 'Jeffrey is cool', 'Adam is cool', 'Matt is cool']
+```
