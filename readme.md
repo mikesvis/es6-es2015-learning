@@ -354,9 +354,9 @@ let template = `
 
 
 
-## 6. Awesome object enhancements 
+## 7. Awesome object enhancements 
 
-### 6.1 Object shorthand
+### 7.1 Object shorthand
 
 Lets imagine the following
 
@@ -410,7 +410,7 @@ new Vue({
 }); 
 ``` 
 
-### 6.2 Method shorthand
+### 7.2 Method shorthand
 
 The following example with old style method declaration:
 
@@ -454,7 +454,7 @@ function getPerson(){
 console.log(getPerson().greet()); // Hello, John!
 ```
 
-### 6.3 Object destructuring
+### 7.3 Object destructuring
 
 ```js
 let person = {
@@ -500,7 +500,7 @@ console.log(results, count);
 // > ['foo', 'bar'] 30
 ```
 
-### 6.3 Object destructuring as a function agrument
+### 7.4 Object destructuring as a function agrument
 
 We can also use object destructuring as a function argument:
 
