@@ -579,3 +579,208 @@ greet({
 
 // > 'Hello, Luke! You are 24. 
 ```
+
+
+
+## 9. Classes
+
+Earlier if we needed objects to be a class siblings we ended up doing this:
+
+```js
+function User(username, email){
+	// a constructor
+	this.username = username;
+	this.email = email;
+	
+	// this one is bad, because each object user will cause new instance of the function
+	// this.changeEmail = function(newEmail){
+	// }
+
+} 
+
+// it's better to have prototype for a method. In this case all the objects of User 
+// will have this method (not like above!)
+User.prototype.changeEmail = function(newEmail) {
+	this.email = newEmail;
+}
+
+var user = new User('Michael', 'support@mail.com');
+
+user.changeEmail('foo@mail.com');
+``` 
+
+### 9.1 Class & its constructor
+
+Now with ES6 we can have a new object syntax:
+
+```js
+class User {
+
+	// now a normal constructor!
+	constructor(username, email){
+		this.username = username;
+		this.email = email;
+	}
+	
+	// short method syntax from 8.2
+	changeEmail(newEmail){
+		this.email = newEmail
+	}
+
+}
+
+let user = new User('Michael', 'support@mail.com');
+
+user.changeEmail('foo@mail.com');
+```
+
+This up above is a syntax **sugar**, because **behind the scenes** changeEmail() is converted to **prototype**, but it saves us a lot of time.
+
+### 9.2 Static methods
+
+Whats about **static** methods? ES6 has it!
+
+```js
+class User {
+
+	constructor(username, email){
+		this.username = username;
+		this.email = email;
+	}
+
+	// this method is only callable directly from a constructor
+	// we can't reference it from other method like: this.register()
+	static register(username, email){
+		return new User(username, email);
+	}
+	
+	changeEmail(newEmail){
+		this.email = newEmail
+	}
+
+}
+
+let user = User.register('Michael', 'support@mail.com');
+
+user.changeEmail('foo@mail.com');
+```
+
+Now with **rest** operator:
+
+```js
+class User {
+
+	constructor(username, email){
+		this.username = username;
+		this.email = email;
+	}
+
+	static register(...args){
+		return new User(...args);
+	}
+	
+	changeEmail(newEmail){
+		this.email = newEmail
+	}
+
+}
+
+let user = User.register('Michael', 'support@mail.com');
+
+user.changeEmail('foo@mail.com');
+```
+
+### 9.3 Getters and setters
+
+Some more features: **getters**, **setters**:
+
+```js
+class User {
+
+	constructor(username, email){
+		this._username = username;
+		this._email = email;
+	}
+
+	static register(...args){
+		return new User(...args);
+	}
+	
+	changeEmail(newEmail){
+		this._email = newEmail
+	}
+	
+	// getter
+	get foo(){
+		return 'foo';
+	}
+
+	// setter (or a mutator)
+	set email(newEmail){
+		this._email = newEmail;
+	}
+
+}
+
+let user = User.register('Michael', 'support@mail.com');
+
+// getter call:
+user.foo;
+// > 'foo'
+
+// setter call
+user.email = 'mail@mail.com';
+// setter is used in the background
+```
+
+### 9.4 Passing object to a function as an argument
+
+One cool thing about classes in ES6 is that they are like a first class citizens. This means that they can be passed around just about anywhere.
+
+```js
+function log(strategy){
+	strategy.handle();
+}
+
+// now we can pass strategy as an object to log() function
+log(new class {
+	handle() {
+		alert("Using the alert strategy to log");
+	}
+});
+
+// another strategy that works as well
+log(new class {
+	handle() {
+		console.log("Using the console.log strategy to log");
+	}
+});
+```
+
+Or something more reusable:
+
+```js
+function log(strategy){
+	strategy.handle();
+}
+
+class AlertLogger {
+
+	handle(){
+		alert("Using the alert strategy to log");
+	}
+
+}
+
+class ConsoleLogger {
+
+	handle(){
+		console.log("Using the console.log strategy to log");
+	}
+
+}
+
+log(new AlertLogger());
+
+log(new ConsoleLogger());
+```
