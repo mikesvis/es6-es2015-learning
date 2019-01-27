@@ -212,3 +212,31 @@ Will output
 ```js
 ['Taylor is cool', 'Jeffrey is cool', 'Adam is cool', 'Matt is cool']
 ```
+
+
+
+## 4. Default parameters
+
+ES6 has now support of default parameters. By example:
+
+```js
+function applyDiscount(cost, discount = .10){
+	return cost - (cost * discount);
+}
+
+alert(applyDiscount(100));
+```
+
+Default value doesn't have to be a primitive value. E.g.
+
+```js
+function defaultDiscountRate(){
+	return .10;
+}
+
+function applyDiscount(cost, discount = defaultDiscountRate()){
+	return cost - (cost * discount);
+}
+
+alert(applyDiscount(100));
+```
