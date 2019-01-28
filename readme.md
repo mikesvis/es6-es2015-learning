@@ -784,3 +784,267 @@ log(new AlertLogger());
 
 log(new ConsoleLogger());
 ```
+
+## 10. ES6 Modules
+
+Think of modules just as of simple files. Lets create a separate file TaskCollection.js.
+
+Before days to insert some siblings of something we ended up doing this:
+
+```html
+<script src="out/main.js"></script>
+<script src="src/TaskCollection.js"></script>
+<script src="src/OtherThing.js"></script>
+```
+
+So in this case it was very inconvinient to maintain what one files shares from the other. The solution for this is a module format in ES6. So now, rather than doing it this way, we will define modules, export behaviour and we will import that behaviour anywhere where it's neccessary.
+
+```js
+// TaskCollection.js
+
+class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+```
+
+So we created TaskCollection, but we don't want this to be in a global space. We need to export or expose this behaviour outside of this file. In the past, people were trying to solve this task in a different ways, e.g. CommonJS, AMD, UMD and so on. But now we are lucky - we can immidately use **EcmaScript6 Modiles** and be happy.
+
+Just a retrospec:
+
+```js
+// ES5
+// CommonJS
+module.exports = {
+	foo: 'bar'
+}
+
+// AMD
+define('TaskCollection', ['_'], function(){
+	// module here
+});
+```
+
+### 10.1 Export module
+
+Now we don't have to worry about those to much because of ES6. And this is simply done by **export** keyword!!!
+
+```js
+// ES6
+// TaskCollection.js
+
+export class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+```
+
+So you can create a file and anything (meaning **anything**) you want to expose to the outerworld you just prefix by **export**. So now lets import our module:
+
+```js
+// main.js
+// CommonJS way
+var TaskCollection = require('./TaskCollection')
+```
+
+### 10.2 Import module
+
+Now the ES6 way to **import** module
+
+```js
+// main.js
+// ES6 way
+import { TaskCollection } from './TaskCollection';
+
+new TaskCollection([
+	'Go to the store',
+	'Finish screencast',
+	'Eat cake'
+]).dump();
+```
+
+But next, at least for the time of the video (May 2016) not so many browsers accept such an syntax and cound not work with modules right ahead.
+
+So, for now lets use a **rollup**
+
+```
+>  rollup main.js --output.format es --name "myBundle" --output.file bundle.js
+```
+
+This will compile `main.js` into `bundle.js`. Now in `main.html` we run our new file:
+
+```html
+	<script src="bundle.js"></script>
+```
+
+So if we open browser console we see:
+
+```js
+["Go to the store", "Finish screencast", "Eat cake"]
+ ``` 
+
+### 10.3 Multiple exports
+
+This works so far, but we can go and clean the code even more! Each **module can have any number of exports**. E.g.
+
+```js
+// ES6
+// TaskCollection.js
+
+export class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+
+export let foo = 'bar';
+
+export myFunc = function(){
+	console.log('myFunc() call');
+}
+```
+
+The **KEY THING TO UNDERSTAND HERE**: The value that we are **EXPORTING** is what we would **IMPORT**. E.g.
+
+```js
+// main.js
+// ES6
+import { TaskCollection, foo } from './TaskCollection';
+
+new TaskCollection([
+	'Go to the store',
+	'Finish screencast',
+	'Eat cake'
+]).dump();
+```
+
+### 10.4 Export default
+
+But the truth is that most of the time you're only **exporting one thing**, so in those situiations we can add keyword **default** to export.
+
+```js
+// ES6
+// TaskCollection.js
+
+export default class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+```
+
+So, here, the only thing we are exporting is the class TaskCollection. And when we do **export default** we must clean `main.js` for default exports. We **remove** `{ }` and finally will look like this:
+
+```js
+// main.js
+import TaskCollection from './TaskCollection';
+
+new TaskCollection([
+	'Go to the store',
+	'Finish screencast',
+	'Eat cake'
+]).dump();
+```
+
+```js
+// TaskCollection.js
+export default class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+```
+
+### 10.5 Combined exports
+
+But we still can have **more exports** from the same file.
+
+```js
+// main.js
+import TaskCollection, { foo } from './TaskCollection';
+
+new TaskCollection([
+	'Go to the store',
+	'Finish screencast',
+	'Eat cake'
+]).dump();
+```
+
+```js
+// TaskCollection.js
+export default class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+
+export let foo = 'bar';
+```
+
+But, to mention again, mostly we will have just only **export default** in one file. We can write TaskCollection export in the end of file.
+
+```js
+// TaskCollection.js
+class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+
+export default TaskCollection;
+```
+
+### 10.6 Conclusion
+
+Finally remember:
+
+1. 	Module is just a file which exposes or exports the behaviour.
+
+2. 	We can import that behaviour by:<br />
+	`import { EXPORT_PROP } from './file'` or<br />
+	`import EXPORT_DEFAULT_PROP from './file'` or<br>
+	combined `import EXPORT_DEFAULT_PROP, { EXPORT_PROP } from './file'`
