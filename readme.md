@@ -1152,3 +1152,139 @@ export default {
 	plugins: [buble()]
 }
 ```
+
+
+
+## 12. Module Bundling With Webpack
+
+Webpack as a rollup is a module bundler. First we need to install it. Again: 2 ways: globaly:
+
+```bash
+npm install -g webpack
+```
+
+or locally (per project):
+
+```bash
+npm install webpack
+```
+
+So for now if we run `npm install weback --save-dev` it will not do anything because we don't have package.json file, so we must create it:
+
+```bash
+npm init -y
+```
+
+`-y` flag gives a fast scaffold rather than making it interactive. So now we can run to install 2.2.1 (exclusively for the purpose of learning because it is 5.0 version around) version
+
+```bash
+npm install webpack@2.2.1
+```
+
+After install we can run `./node_modules/.bin/webpack` and it tells us that it doesn't have config file.
+
+```
+No configuration file found and no output filename configured via CLI option.
+A configuration file could be named 'webpack.config.js' in the current directory.
+Use --help to display the CLI options.
+```
+
+If there is no `webpack.config.js` file, then **entry point and output** must be specified. Let's try w/o config:
+
+```sh
+> ./node_modules/.bin/webpack src/main.js dist/main.js
+
+Hash: 580706e228eda630c4d8
+Version: webpack 2.2.1
+Time: 96ms
+  Asset     Size  Chunks             Chunk Names
+main.js  3.28 kB       0  [emitted]  main
+   [0] ./src/TaskCollection.js 150 bytes {0} [built]
+   [1] ./src/main.js 133 bytes {0} [built]
+```
+
+This works. For next step, create `webpack.config.js`.
+
+```js
+var webpack = require('webpack');
+
+module.exports = {
+	entry: './src/main.js',
+	output: {
+		filename: './dist/main.js',
+	}
+}
+```
+
+And run:
+
+```sh
+> ./node_modules/.bin/webpack
+```
+
+This worked and its better to reference the **config file** in most projects. Now we can upgrade functionality very easily like **source-map** for debugging:
+
+```js
+var webpack = require('webpack');
+
+module.exports = {
+	entry: './src/main.js',
+	devtool: 'source-map',
+	output: {
+		filename: './dist/main.js',
+	}
+}
+```
+
+Also we can make scripts in package.json file - **remember** that ./node_modules/.bin/ will be **auto included**:
+
+```json
+{
+  "name": "step-12",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}
+
+```
+
+```sh
+// now we can use the added script
+> npm run build
+```
+
+But we still need compiler like buble, so called **loader**. Install `npm install buble-loader --save-dev`. Loaders will transform code somehow. Also we need to provide **a test**, this means which files we need to process through the loader loader.
+
+```js
+var webpack = require('webpack');
+
+module.exports = {
+	entry: './src/main.js',
+	devtool: 'source-map',
+	output: {
+		filename: './dist/main.js',
+	},
+	module: {
+		loaders: [
+			{
+				test: /\.js$/,
+				loader: 'buble-loader'
+			}
+		] 
+	}
+}
+
+// > npm run build
+```
+
+With laravel is much more easy. Reference to the **Laravel from scratch** series.

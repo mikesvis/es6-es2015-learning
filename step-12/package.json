@@ -1,0 +1,17 @@
+{
+  "name": "step-12",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "buble-loader": "^0.5.1",
+    "webpack": "^2.2.1"
+  }
+}
