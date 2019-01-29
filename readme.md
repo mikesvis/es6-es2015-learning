@@ -1048,3 +1048,107 @@ Finally remember:
 	`import { EXPORT_PROP } from './file'` or<br />
 	`import EXPORT_DEFAULT_PROP from './file'` or<br>
 	combined `import EXPORT_DEFAULT_PROP, { EXPORT_PROP } from './file'`
+
+
+
+## 11. Module Bundling With Rollup.js
+
+We start module fetching (compiling) with rollup.js. Very fast, very clean output, treeshaking. Let's install rollup globally:
+
+```bash
+sudo npm install rollup --global
+```
+
+Or locally (goes to /node_modules)
+
+```bash
+npm install rollup
+```
+
+If we use `> rollup main.js --output.format esm` it will simply output the result to stdout. So we better run:
+
+```bash
+rollup --format=esm --file=main.dist.js main.js
+```
+
+So now we get single file - a **bundle**. Module bundler takes all the modules and bundles them into single file. But don't forget that it is a **module bundler** and it will not take ES6 and convert it to ES5! For this purpose we should use babel or boble. Boble is simplier than babel. But we can go further and use buble with rollup, so we search for the plugin `rollup-plugin-buble`
+
+```bash
+npm install --save-dev rollup-plugin-buble
+```
+
+Next we need to reference it in rollup config file. Create `rollup.config.js`
+
+```js
+import buble from 'rollup-plugin-buble';
+
+export default {
+	// entry: 'src/main.js',
+	input: 'main.js',
+	output: {
+		format: 'esm'
+	},
+	plugins: [buble()]
+}
+
+// and run > rollup -c
+```
+
+So there is the difference.
+
+Result **without** buble:
+
+```js
+class TaskCollection {
+
+	constructor(tasks = []){
+		this.tasks = tasks;
+	}
+
+	dump() {
+		console.log(this.tasks);
+	}
+
+}
+
+new TaskCollection([
+	'Go to the store',
+	'Finish screencast',
+	'Eat cake'
+]).dump();
+```
+
+Result with **buble**:
+```js
+var TaskCollection = function TaskCollection(tasks){
+    if ( tasks === void 0 ) tasks = [];
+
+    this.tasks = tasks;
+};
+
+TaskCollection.prototype.dump = function dump () {
+    console.log(this.tasks);
+};
+
+new TaskCollection([
+    'Go to the store',
+    'Finish screencast',
+    'Eat cake'
+]).dump();
+```
+
+So final `rollup.config.js` will look like this:
+
+```js
+import buble from 'rollup-plugin-buble';
+
+export default {
+	// entry: 'src/main.js',
+	input: 'main.js',
+	output: {
+		file: 'main.dist.js',
+		format: 'esm'
+	},
+	plugins: [buble()]
+}
+```
