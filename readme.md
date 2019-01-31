@@ -1443,3 +1443,88 @@ console.log(
 );
 //> lolzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 ```
+
+
+
+## 14. Array#find and Array#includes
+
+Not much to tell about.
+
+### 14.1 Array.find()
+
+Think of this as of `.map()` or `.filter()`
+
+```js
+console.log(
+	[2, 4, 6, 8, 10, 11].find(function(item){
+		// find me a first element which meets the condition. Looks like findFirst.
+		return item === 8; // 8
+		return item === 10; // 10
+		return item > 5; // 6
+		return item % 2 > 0; // 11
+	});
+);
+```
+
+or new ES6 syntax:
+
+```js
+console.log(
+	[2, 4, 6, 8, 10, 11].find(item => item % 2); // 11
+	[2, 4, 6, 8, 10, 11].find(item => item > 8); // 10
+);
+```
+
+### 14.2 Array.findIndex()
+
+If we want `index` then we use `.findIndex()`:
+
+```js
+console.log(
+	[2, 4, 6, 8, 10, 11].findIndex(item => item % 2); // 5
+	[2, 4, 6, 8, 10, 11].findIndex(item => item > 8); // 4
+);
+```
+
+Real-world example:
+
+```js
+class User {
+
+	constructor(name, isAdmin){
+		this.name = name;
+		this.isAdmin = isAdmin;
+	}	
+
+}
+
+let users = [
+	new User('Michael', false),
+	new User('Jane', true),
+	new User('Jack', false)
+];
+
+// find me FIRST user who isAdmin = true;
+console.log(
+	users.find(user => user.isAdmin)
+);
+// > User {name: 'Jane', isAdmin: true}
+
+// or we want name of FIRST admin
+console.log(
+	users.find(user => user.isAdmin).name
+);
+```
+
+### 14.3 Some more stuff
+
+`[].fill()`, `[].keys()`, `[].values()`, `[].entries()`
+
+```js
+let items = ['jeff', 'jordan', 'way'].entries();
+
+for(let name of items) console.log(name);
+// > [0, 'jeff']
+// > [1, 'jordan']
+// > [2, 'way']
+```
