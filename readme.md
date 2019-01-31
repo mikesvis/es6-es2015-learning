@@ -1409,3 +1409,37 @@ thing(3000).then((data)=>console.log(`Proceed now that the timer has concluded. 
 ```
 
 Look how we can easily pass **length** inside the function!!!!
+
+
+
+## 14. Useful String Additions
+
+Very simple and useful string methods `.includes(needle)`, `.startsWith(needle)`, `.endsWith(needle)`:
+
+```js
+let title = 'Red rising';
+
+if(!title.includes('Blue')){
+	console.log('This book does not include "Blue"');
+}
+```
+
+Also we can have second argument:
+
+1. 'string'.startsWith(needle, 5) - **5th char** is needle
+2. 'string'.endsWith(needle, 5) - **End of string MINUS 5 chars** is needle
+
+`'string'.repeat()`:
+
+```js
+let str = 'lol';
+
+console.log(str.repeat(5));
+// > lollollollollol
+
+// or with template strings
+console.log(
+	`${str} + $('z'.repeat(100))` 
+);
+//> lolzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+```
