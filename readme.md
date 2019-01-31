@@ -1439,7 +1439,7 @@ console.log(str.repeat(5));
 
 // or with template strings
 console.log(
-	`${str} + $('z'.repeat(100))` 
+	`${str} + ${'z'.repeat(100)}` 
 );
 //> lolzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 ```
