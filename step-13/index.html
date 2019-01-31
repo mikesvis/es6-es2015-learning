@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script>
+		var thing = function(length){
+			return new Promise(function(resolve, reject){
+			
+				console.log('Init promise');
+				setTimeout(function(){
+					console.log('Timer done');
+					resolve(`Some dummy data about result and the timer is: ${length}`);
+				}, length);
+
+			});
+		}
+
+		thing(3000).then((data)=>console.log(`Proceed now that the timer has concluded. Result is: ${data}`));
+	</script>
+</body>
+</html>

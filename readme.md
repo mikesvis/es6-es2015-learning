@@ -1288,3 +1288,124 @@ module.exports = {
 ```
 
 With laravel is much more easy. Reference to the **Laravel from scratch** series.
+
+
+
+## 13. Promises 101
+
+So beforedays we did this to simulate asynchonus behaviour:
+
+```js
+// jQuery
+$('button').on('click', function(){
+});
+
+// nodeJs
+var fs = require('fs');
+fs.exists('/path/to/the/file', function(){
+});
+```
+
+So as we did and now see, we fall into this **callback trap** or **callback hell**. We find ourselves that we create more and more nested annonymous functions here. 1 or 2 is ok, but 3 and more and it gets really crappy and really hard to maintain. So **Promises** is the one way we can solve this and getaway from **callback hell**. 
+
+```js
+new Promise
+```
+
+So what is a **promise**? Litteraly it's nothing more than a **placeholder** or a holding spot **for an operation which has not yet taken place**. It's a **promise to perform an action**. So actually we were been using promises w/o knowing that we were, because it is likely that the library that we were using was actually dealing with promise behind the scenes. Example from axios.
+
+```js
+var promise = axios.get('/url', data);
+```
+
+As we may not know, but `axios.get('/url', data)` actually **returns a promise** object! Think about it: it is an ajax request and it will take some amount of time to process, so rather than just locking everything down instead it returns a promise which you can use to operate upon when it is done! 
+
+```js
+// promise me to get the data:
+var promise = axios.get('/url', data);
+
+// and when you done, we want to do the following code:
+promise.then(function(data){
+	...
+});
+
+// or we can even even say: catch if anything go wrong and we want to handle it in some way:
+promise.catch(function(err){
+	...
+});
+
+// So promise is a placeholder for an action that has not yet been completed just now,
+// but once it has completed -> .then() - proceed and perform following action
+```
+
+shorter way `.then().catch()`:
+
+```js
+var promise = axios.get('/url', data);
+promise.then(function(data){
+	...
+}).catch(function(err){
+	...
+});
+```
+
+or `.catch()` as a second argument of `.then()`:
+
+```js
+var promise = axios.get('/url', data);
+promise.then(function(data){...},function(err){...});
+```
+
+### 13.1 Basic makeup of promise
+
+It is really simple
+
+```js
+var thing = new Promise(function(){
+});
+```
+
+One thing to understand here that this anonymous function will be executed imidiatelly (think of it as almost like a constructor).
+
+```js
+// We get alert right away.
+var thing = new Promise(function(){
+	alert('1');
+});
+```
+
+This function is so-called **executor** where you can arrange anything that is to take place. The **key element** here that this function will accept `resolve` and `reject` agruments - **those are FUNCTIONS which you can trigger dependent outcome of you operation**. So for example, if you manualy do an ajax request within that function and if everything is processed as it expected we can call `resolve()`, or, if an error was thrown, then we may call `reject()`. All this specifically connected to `thing.then()`. In other words `thing.then()` will only trigger when/if `resolve()` is called.
+
+```js
+var thing = new Promise(function(resolve, reject){
+	
+	console.log('Init promise');
+	setTimeout(function(){
+		console.log('Timer done');
+		resolve('Some dummy data about result');
+	}, 5000);
+
+});
+
+thing.then((data)=>console.log(`Proceed now that the timer has concluded ${data}`));
+```
+
+Again: if we don't have `resolve()` in the function, then **not** `then()` **nor** `catch()` will be triggered! Let's make thing to look like something like this:
+
+```js
+var thing = function(length){
+	return new Promise(function(resolve, reject){
+	
+		console.log('Init promise');
+		setTimeout(function(){
+			console.log('Timer done');
+			resolve(`Some dummy data about result and the timer is: ${length}`);
+		}, length);
+
+	});
+}
+
+thing(3000).then((data)=>console.log(`Proceed now that the timer has concluded. Result is: ${data}`));
+```
+
+Look how we can easily pass **length** inside the function!!!!
