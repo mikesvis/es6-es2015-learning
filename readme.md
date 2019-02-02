@@ -1,5 +1,21 @@
 # ES2015 Crash Course
 
+3. [To Var, Let, or Const](#3-to-var-let-or-const)
+4. [Arrows](#4-arrows)
+5. [Default parameters](#5-default-parameters)
+6. [Rest and spread](#6-rest-and-spread)
+7. [Template strings](#7-template-strings)
+8. [Awesome object enhancements](#8-awesome-object-enhancements)
+9. [Classes](#9-classes)
+10. [ES6 Modules](#10-es6-modules)
+11. [Module Bundling With Rollup.js](#11-module-bundling-with-rollup-js)
+12. [Module Bundling With Webpack](#12-module-bundling-with-webpack)
+13. [Promises 101](#13-promises-101)
+14. [Useful String Additions](#14-useful-string-additions)
+15. [Array#find and Array#includes](#15-array-find-and-array-includes)
+16. [Generators](#16-generators)
+17. [Sets](#17-sets)
+
 ## 3. To Var, Let, or Const
 
 We already know how to decalare variables
@@ -99,7 +115,7 @@ const months = Object.freeze([...]);
 
 3\. Use const for variables which won't change (e.g. months names)
 
-
+[back to top](#es2015-crash-course)
 
 ## 4. Arrows
 
@@ -213,7 +229,7 @@ Will output
 ['Taylor is cool', 'Jeffrey is cool', 'Adam is cool', 'Matt is cool']
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 5. Default parameters
 
@@ -241,7 +257,7 @@ function applyDiscount(cost, discount = defaultDiscountRate()){
 alert(applyDiscount(100));
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 6. Rest and spread
 
@@ -312,7 +328,7 @@ let numbers = [1, 2];
 sum('bar', ...numbers);
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 7. Template strings
 
@@ -352,7 +368,7 @@ let template = `
 `.trim();
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 8. Awesome object enhancements 
 
@@ -580,7 +596,7 @@ greet({
 // > 'Hello, Luke! You are 24. 
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 9. Classes
 
@@ -784,6 +800,8 @@ log(new AlertLogger());
 
 log(new ConsoleLogger());
 ```
+
+[back to top](#es2015-crash-course)
 
 ## 10. ES6 Modules
 
@@ -1049,7 +1067,7 @@ Finally remember:
 	`import EXPORT_DEFAULT_PROP from './file'` or<br>
 	combined `import EXPORT_DEFAULT_PROP, { EXPORT_PROP } from './file'`
 
-
+[back to top](#es2015-crash-course)
 
 ## 11. Module Bundling With Rollup.js
 
@@ -1153,7 +1171,7 @@ export default {
 }
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 12. Module Bundling With Webpack
 
@@ -1289,7 +1307,7 @@ module.exports = {
 
 With laravel is much more easy. Reference to the **Laravel from scratch** series.
 
-
+[back to top](#es2015-crash-course)
 
 ## 13. Promises 101
 
@@ -1410,7 +1428,7 @@ thing(3000).then((data)=>console.log(`Proceed now that the timer has concluded. 
 
 Look how we can easily pass **length** inside the function!!!!
 
-
+[back to top](#es2015-crash-course)
 
 ## 14. Useful String Additions
 
@@ -1444,7 +1462,7 @@ console.log(
 //> lolzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 15. Array#find and Array#includes
 
@@ -1529,7 +1547,7 @@ for(let name of items) console.log(name);
 // > [2, 'way']
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 16. Generators
 
@@ -1664,7 +1682,7 @@ console.log(
 // [1, 2, 3, 4, 5]
 ```
 
-
+[back to top](#es2015-crash-course)
 
 ## 17. Sets
 
@@ -1717,3 +1735,5 @@ arr = [...items]; // convert to array
 arr.filter(tag => tag.length == 3) // filter
 let items2 = new Set(arr.filter(tag => tag.length == 3)); // convert back to set
 ```
+
+[back to top](#es2015-crash-course)
