@@ -1663,3 +1663,57 @@ console.log(
 
 // [1, 2, 3, 4, 5]
 ```
+
+
+
+## 17. Sets
+
+Sets are collection of values where each value must be unique.
+
+```js
+let items = new Set(['one', 'two', 'three']);
+console.log(items);
+// Set {"one", "two", "three"}
+```
+
+but if: 
+
+```js
+let items = new set(['one', 'two', 'three', 'one', 'two', 'three']);
+console.log(items);
+
+// 2nd 'one', 'two', 'three' will be ignored
+// Set {"one", "two", "three"}
+
+items.size(); // 3
+items.add('four'); // Set {"one", "two", "three", "four"}
+items.delete("two"); // true
+items.has('four'); // true
+items.forEach(item => console.log(item)); // one // three // four
+items.clear() // clears set // undefined
+```
+
+We can **iterate** through sets using for example `for-of` or `.forEach()`:
+
+```js
+let items = new set(['one', 'two', 'three', 'one', 'two', 'three']);
+for(let item of items){
+	console.log(item);
+}
+// one // two // three
+
+items.forEach(item => console.log(item)); // one // three // four
+// one // two // three
+```
+
+This may be usefull in forms where user can input comma separated tags.
+
+But what if we want to find a value from set which is letters long? We don't have special method in Sets api for that. So what we can do? Convert set into `array`, then `filter` through that array, and after convert result back into array.
+
+```js
+let items = new set(['one', 'two', 'three', 'one', 'two', 'three']);
+
+arr = [...items]; // convert to array
+arr.filter(tag => tag.length == 3) // filter
+let items2 = new Set(arr.filter(tag => tag.length == 3)); // convert back to set
+```
