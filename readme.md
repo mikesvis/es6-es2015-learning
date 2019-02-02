@@ -1446,11 +1446,11 @@ console.log(
 
 
 
-## 14. Array#find and Array#includes
+## 15. Array#find and Array#includes
 
 Not much to tell about.
 
-### 14.1 Array.find()
+### 15.1 Array.find()
 
 Think of this as of `.map()` or `.filter()`
 
@@ -1475,7 +1475,7 @@ console.log(
 );
 ```
 
-### 14.2 Array.findIndex()
+### 15.2 Array.findIndex()
 
 If we want `index` then we use `.findIndex()`:
 
@@ -1516,7 +1516,7 @@ console.log(
 );
 ```
 
-### 14.3 Some more stuff
+### 15.3 Some more stuff
 
 `[].fill()`, `[].keys()`, `[].values()`, `[].entries()`
 
@@ -1527,4 +1527,139 @@ for(let name of items) console.log(name);
 // > [0, 'jeff']
 // > [1, 'jordan']
 // > [2, 'way']
+```
+
+
+
+## 16. Generators
+
+Generator allows function to exit at a particullar point. It allows function to pause, then later, you, `the caller`, have an ability to resume it, ant then pause again potentially, ant then resume and so on.
+
+```js
+function *numbers(){
+	console.log('Begin');
+	yield 1;
+	yield 2;
+	yield 3;
+} 
+
+numbers();
+```
+
+`*` means that the function is generator. `yeild 1` means **pause** and return value `1`. `yield` is much like a return statement but it can **pause** and later **resume** from the exact same point, using the exact same set of state.
+
+So if we run upper code we will not see anything in the console because of the generator function. If we `console.log(numbers())` it will return special type of object with props of `GeneratorStatus`, `GeneratorFunction` & so on, this indicates that we are dealing with not *just a regular function*.
+
+How do we execute generators & get to the first yield?
+
+```js
+function *numbers(){
+	console.log('Begin');
+	yield 1;
+	yield 2;
+	yield 3;
+} 
+
+let iterator = numbers();
+console.log(iterator.next());
+```
+
+Now we have began the process and see in console:
+
+```js
+// 'Begin'
+// Object {value: 1, done: false}
+```
+
+Bear in mind that the result of `iterator.next()` is not just `1` but `Object {value: 1, done: false}`.
+
+```js
+function *numbers(){
+	console.log('Begin');
+	yield 1;
+	yield 2;
+	yield 3;
+} 
+
+let iterator = numbers();
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());
+
+// 'Begin'
+// Object {value: 1, done: false}
+// Object {value: 2, done: false}
+// Object {value: 3, done: false}
+```
+
+So: first `.next()` advances to the first `yield`. Thats why we don't hit `'Begin'` untill we run first `iterator.next()`. After first call and execution of `yield` it **pauses** the execution with the state untill we hit `.next()` one mor time. After it is just repeated inthe same manner.
+
+One more example
+
+```js
+function *range(start, end){
+	while(start <= end){
+		yield start;
+		start++;
+	}
+}
+
+let iterator = range(1, 5);
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());
+console.log(iterator.next());
+
+// Object {value: 1, done: false}
+// Object {value: 2, done: false}
+// Object {value: 3, done: false}
+// Object {value: 4, done: false}
+// Object {value: 5, done: false}
+// Object {value: undefined, done: true}
+```
+
+Another way to deal with the iterators is to use `for(a of b){ ... }`:
+
+```js
+function *range(start, end){
+	while(start <= end){
+		yield start;
+		start++;
+	}
+}
+
+let iterator = range(1, 5);
+
+for(i of iterator){
+	console.log(i);
+}
+
+// 1
+// 2
+// 3
+// 4
+// 5
+```
+
+See: the output is a little different. Operator `for-of` understands **iterators** and treats them a bit different. You will not get the previous example's `Object`, but `for-of` will automatically fetch value from that object for you. 
+
+Another way is to use `spread` operator like:
+
+```js
+function *range(start, end){
+	while(start <= end){
+		yield start;
+		start++;
+	}
+}
+
+let iterator = range(1, 5);
+
+console.log(
+	[...range(1, 5)]
+);
+
+// [1, 2, 3, 4, 5]
 ```
